@@ -5,21 +5,21 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import { personal } from "@/lib/data";
 
 const highlights = [
-    { value: "5+", label: "Years of coding" },
-    { value: "20+", label: "Projects built" },
+    { value: "3+", label: "Years of coding" },
+    { value: "3+", label: "Projects built" },
     { value: "∞", label: "Bugs fixed" },
 ];
 
 export function About() {
     return (
-        <section id="about" className="relative py-28 px-6">
+        <section id="about" className="relative py-29 px-6">
             <div className="mx-auto max-w-5xl">
                 <SectionHeading label="Who I am" title="About Me" />
 
                 <div className="grid grid-cols-1 gap-10 md:grid-cols-2 items-center">
                     {/* Text */}
                     <motion.div
-                        className="space-y-5"
+                        className="space-y-8"
                         initial={{ opacity: 0, x: -30 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true, margin: "-80px" }}
@@ -27,25 +27,17 @@ export function About() {
                     >
                         <p className="text-zinc-300 leading-relaxed text-base">
                             I&apos;m <strong className="text-white font-semibold">{personal.name}</strong>, a passionate
-                            full-stack developer who loves turning ideas into thoughtful digital experiences.
+                            developer who loves turning ideas into thoughtful digital experiences.
                         </p>
                         <p className="text-zinc-400 leading-relaxed text-base">
-                            I have a deep interest in clean code, great developer experience, and building
-                            things that actually work in production. Whether it&apos;s a user-facing web app or
+                            I have a deep interest in clean code, developer experience, and building new
+                            things. Whether it&apos;s a user-facing web app or
                             a background service, I care about every layer of the stack.
                         </p>
                         <p className="text-zinc-400 leading-relaxed text-base">
-                            When I&apos;m not coding, I&apos;m probably learning something new, contributing to
-                            open-source, or tinkering with side projects that may or may not ship.
+                            When I&apos;m not coding, I&apos;m probably learning something new, or tinkering with side projects that may or may not ship.
                         </p>
 
-                        <div className="flex flex-wrap gap-3 pt-2">
-                            {personal.github && (
-                                <SocialLink href={personal.github} label="GitHub">
-                                    <GitHubIcon />
-                                </SocialLink>
-                            )}
-                        </div>
                     </motion.div>
 
                     {/* Stats / Card */}
@@ -87,8 +79,8 @@ export function About() {
                             </div>
                             <p className="text-zinc-500"><span className="text-violet-400">const</span> <span className="text-cyan-400">dev</span> = {"{"}</p>
                             <p className="pl-4 text-zinc-400">  name: <span className="text-amber-300">&ldquo;{personal.name}&rdquo;</span>,</p>
-                            <p className="pl-4 text-zinc-400">  role: <span className="text-amber-300">&ldquo;{personal.title}&rdquo;</span>,</p>
-                            <p className="pl-4 text-zinc-400">  passions: <span className="text-green-400">[&ldquo;code&rdquo;, &ldquo;oss&rdquo;, &ldquo;craft&rdquo;]</span>,</p>
+                            <p className="pl-4 text-zinc-400">  role: <span className="text-amber-300">&ldquo;{personal.rol}&rdquo;</span>,</p>
+                            <p className="pl-4 text-zinc-400">  passions: <span className="text-green-400">[&ldquo;making&rdquo;, &ldquo;new&rdquo;, &ldquo;stuff&rdquo;]</span>,</p>
                             <p className="text-zinc-500">{"}"}</p>
                         </motion.div>
                     </motion.div>

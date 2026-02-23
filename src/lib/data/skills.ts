@@ -2,25 +2,23 @@ import type { Skill } from "@/types";
 
 export const skills: Skill[] = [
     // Languages
-    { name: "TypeScript", category: "language" },
-    { name: "JavaScript", category: "language" },
-    { name: "Python", category: "language" },
-    { name: "Rust", category: "language" },
-    { name: "SQL", category: "language" },
+    { name: "TypeScript", category: "language", icon: "typescript", color: "#3178C6" },
+    { name: "JavaScript", category: "language", icon: "javascript", color: "#F7DF1E" },
+    { name: "Python", category: "language", icon: "python", color: "#3776AB" },
+    { name: "C++", category: "language", icon: "cplusplus", color: "#00599C" },
+    { name: "SQL", category: "language", icon: "sqlite", color: "#003B57" },
 
     // Frameworks & Libraries
-    { name: "React", category: "framework" },
-    { name: "Next.js", category: "framework" },
-    { name: "Node.js", category: "framework" },
-    { name: "Fastify", category: "framework" },
-    { name: "Tailwind CSS", category: "framework" },
+    { name: "React", category: "framework", icon: "react", color: "#61DAFB" },
+    { name: "Next.js", category: "framework", icon: "nextdotjs", color: "#ffffff" },
+    { name: "Node.js", category: "framework", icon: "nodedotjs", color: "#5FA04E" },
+    { name: "Tailwind CSS", category: "framework", icon: "tailwindcss", color: "#06B6D4" },
 
     // Tools & Infra
-    { name: "Docker", category: "tool" },
-    { name: "Git", category: "tool" },
-    { name: "PostgreSQL", category: "tool" },
-    { name: "Redis", category: "tool" },
-    { name: "Linux", category: "tool" },
+    { name: "Docker", category: "tool", icon: "docker", color: "#2496ED" },
+    { name: "Git", category: "tool", icon: "git", color: "#F05032" },
+    { name: "MySQL", category: "tool", icon: "mysql", color: "#4479A1" },
+    { name: "Linux", category: "tool", icon: "linux", color: "#FCC624" },
 ];
 
 export const skillCategories = [

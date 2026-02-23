@@ -18,7 +18,7 @@ export function Projects() {
                 <SectionHeading
                     label="What I've built"
                     title="Projects"
-                    description="A selection of things I've shipped. Edit src/lib/data/projects.ts to add your own."
+                    description="A selection of projects I've built."
                 />
 
                 <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">

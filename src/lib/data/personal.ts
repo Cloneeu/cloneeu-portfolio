@@ -1,10 +1,11 @@
 import type { PersonalInfo } from "@/types";
 
 export const personal: PersonalInfo = {
-    name: "Cloneeu",
-    displayName: "Clone",
-    title: "Full-Stack Developer",
-    bio: "I build things for the web. Passionate about creating clean, performant, and user-friendly applications — from elegant UIs to scalable back-end systems.",
+    name: "Alex",
+    displayName: "Alexandro",
+    title: "Systems Engineer",
+    rol: "Software Engineer",
+    bio: "I build things for passion. I like to create clean, performant, and user-friendly applications",
     github: "https://github.com/Cloneeu",
     // twitter: "https://twitter.com/yourhandle",
     // linkedin: "https://linkedin.com/in/yourhandle",

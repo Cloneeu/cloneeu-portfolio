@@ -73,7 +73,7 @@ export function Hero() {
                 {/* Bio */}
                 <motion.p
                     variants={item}
-                    className="mb-10 max-w-xl mx-auto text-base leading-relaxed text-zinc-400 md:text-lg"
+                    className="mb-10 max-w-2xl mx-auto text-base leading-relaxed text-zinc-400 md:text-lg"
                 >
                     {personal.bio}
                 </motion.p>
