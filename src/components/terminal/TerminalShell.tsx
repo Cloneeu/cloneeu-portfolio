@@ -1,3 +1,5 @@
+import { CrtShader } from "@/components/terminal/CrtShader";
+
 const systemChecks = [
   "PHOSPHOR DISPLAY ........ ONLINE",
   "MEMORY BANK ............. 640K OK",
@@ -13,8 +15,9 @@ export function TerminalShell() {
 
       <section className="crt-terminal" aria-labelledby="terminal-title">
         <div className="crt-screen">
-          <div className="crt-glass-reflection" aria-hidden="true" />
+          <CrtShader />
           <div className="crt-scanlines" aria-hidden="true" />
+          <div className="crt-glass-reflection" aria-hidden="true" />
 
           <header className="terminal-topbar">
             <span>CLONEEU/OS</span>
