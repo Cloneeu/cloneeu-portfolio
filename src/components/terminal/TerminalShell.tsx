@@ -1,5 +1,9 @@
+"use client";
+
+import { BootOverlay } from "@/components/terminal/BootOverlay";
 import { CrtShader } from "@/components/terminal/CrtShader";
 import { CrtWarpFilter } from "@/components/terminal/CrtWarpFilter";
+import { useBootSequence } from "@/hooks/useBootSequence";
 
 const systemChecks = [
   "PHOSPHOR DISPLAY ........ ONLINE",
@@ -10,8 +14,11 @@ const systemChecks = [
 const directories = ["ABOUT", "SKILLS", "EXPERIENCE", "PROJECTS", "CONTACT"] as const;
 
 export function TerminalShell() {
+  const { phase, skipBoot } = useBootSequence();
+  const isReady = phase === "ready";
+
   return (
-    <main className="crt-workspace">
+    <main className={`crt-workspace crt-workspace--${phase}`}>
       <div className="crt-ambient-glow" aria-hidden="true" />
       <CrtWarpFilter />
 
@@ -21,7 +28,7 @@ export function TerminalShell() {
           <div className="crt-scanlines" aria-hidden="true" />
           <div className="crt-glass-reflection" aria-hidden="true" />
 
-          <div className="crt-content">
+          <div className="crt-content" aria-hidden={!isReady} inert={!isReady}>
             <header className="terminal-topbar">
               <span>CLONEEU/OS</span>
               <span className="terminal-topbar__center">PERSONAL TERMINAL</span>
@@ -79,6 +86,8 @@ export function TerminalShell() {
               <span className="terminal-status">INTERFACE // STANDBY</span>
             </footer>
           </div>
+
+          {!isReady && <BootOverlay phase={phase} onSkip={skipBoot} />}
         </div>
       </section>
 

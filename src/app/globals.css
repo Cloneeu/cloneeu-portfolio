@@ -123,6 +123,292 @@ select {
   width: 100%;
   height: 100%;
   grid-template-rows: auto 1fr auto;
+  opacity: 1;
+  transition: opacity 360ms ease-out;
+}
+
+.crt-workspace:not(.crt-workspace--ready) .crt-content {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Boot sequence */
+.boot-overlay {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  overflow: hidden;
+  background: #000;
+  color: var(--crt-phosphor);
+}
+
+.boot-overlay--black-hole {
+  display: grid;
+  place-items: center;
+}
+
+.black-hole-loader {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.black-hole-loader__canvas {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.black-hole-loader__fallback {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: min(76vmin, 46rem);
+  aspect-ratio: 1.85;
+  background-image: radial-gradient(circle, rgba(var(--crt-phosphor-rgb), 0.72) 0 0.7px, transparent 1px);
+  background-size: 5px 5px;
+  filter: drop-shadow(0 0 0.35rem rgba(var(--crt-phosphor-rgb), 0.34));
+  mask-image: radial-gradient(ellipse, transparent 0 9%, #000 13% 74%, transparent 92%);
+  opacity: 0.62;
+  transform: translate(-50%, -50%);
+  animation: fallback-singularity-spin 5s linear infinite;
+  transition: opacity 180ms ease-out;
+}
+
+.black-hole-loader--ready .black-hole-loader__fallback {
+  opacity: 0;
+}
+
+.black-hole-loader__core {
+  position: absolute;
+  z-index: 2;
+  top: 50%;
+  left: 50%;
+  width: clamp(3.4rem, 8.5vmin, 6.4rem);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: #000;
+  box-shadow:
+    0 0 0 1px rgba(var(--crt-phosphor-rgb), 0.22),
+    0 0 1.2rem rgba(var(--crt-phosphor-rgb), 0.18),
+    0 0 3rem rgba(var(--crt-phosphor-rgb), 0.08);
+  transform: translate(-50%, -50%);
+}
+
+.black-hole-loader__core::after {
+  position: absolute;
+  inset: -0.45rem;
+  border: 1px dotted rgba(var(--crt-phosphor-rgb), 0.3);
+  border-radius: inherit;
+  content: "";
+  animation: event-horizon-pulse 1.2s ease-in-out infinite;
+}
+
+.boot-loader-copy {
+  position: absolute;
+  z-index: 3;
+  right: 1.5rem;
+  bottom: clamp(3.5rem, 8vh, 6rem);
+  left: 1.5rem;
+  text-align: center;
+  text-shadow: 0 0 0.65rem rgba(var(--crt-phosphor-rgb), 0.5);
+}
+
+.boot-loader-copy p,
+.boot-loader-copy span {
+  margin: 0;
+  letter-spacing: 0.18em;
+}
+
+.boot-loader-copy p {
+  font-size: clamp(0.72rem, 1.2vw, 0.92rem);
+}
+
+.boot-loader-copy > span {
+  display: block;
+  margin-top: 0.45rem;
+  color: var(--crt-dim);
+  font-size: clamp(0.56rem, 0.85vw, 0.68rem);
+}
+
+.boot-loader-progress {
+  width: min(18rem, 68vw);
+  height: 1px;
+  overflow: hidden;
+  margin: 1rem auto 0;
+  background: rgba(var(--crt-phosphor-rgb), 0.16);
+}
+
+.boot-loader-progress span {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: var(--crt-phosphor);
+  box-shadow: 0 0 0.6rem var(--crt-phosphor);
+  transform: scaleX(0);
+  transform-origin: left;
+  animation: singularity-progress 2.55s linear forwards;
+}
+
+.boot-skip {
+  position: absolute;
+  z-index: 4;
+  top: clamp(1rem, 3vw, 2rem);
+  right: clamp(1rem, 3vw, 2.5rem);
+  padding: 0.45rem 0.6rem;
+  border: 1px solid rgba(var(--crt-phosphor-rgb), 0.18);
+  background: rgba(0, 8, 2, 0.72);
+  color: var(--crt-muted);
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  cursor: pointer;
+  transition: border-color 150ms ease, color 150ms ease;
+}
+
+.boot-skip:hover,
+.boot-skip:focus-visible {
+  border-color: rgba(var(--crt-phosphor-rgb), 0.58);
+  color: var(--crt-phosphor);
+  outline: none;
+}
+
+.boot-skip kbd {
+  margin-left: 0.35rem;
+  color: var(--crt-phosphor);
+  font: inherit;
+}
+
+.boot-power-line {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+}
+
+.boot-power-line span {
+  width: 0;
+  height: 2px;
+  background: #e0ffe0;
+  box-shadow:
+    0 0 0.8rem #b7ffb6,
+    0 0 2.5rem rgba(var(--crt-phosphor-rgb), 0.8);
+  animation: power-line-expand 620ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.crt-workspace--power-on .crt-screen {
+  animation: crt-power-on 640ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.boot-post {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.42rem;
+  padding: clamp(3.5rem, 8vw, 8rem);
+  background:
+    radial-gradient(ellipse at center, rgba(12, 36, 15, 0.42), transparent 68%),
+    #010402;
+  color: var(--crt-muted);
+  font-size: clamp(0.68rem, 1.25vw, 0.92rem);
+  text-shadow: 0 0 0.5rem rgba(var(--crt-phosphor-rgb), 0.42);
+}
+
+.boot-post p {
+  margin: 0;
+  opacity: 0;
+  transform: translateY(0.3rem);
+  animation: post-line-appear 160ms steps(2, end) forwards;
+}
+
+.boot-post p span {
+  color: var(--crt-phosphor);
+}
+
+.boot-post__ready {
+  margin-top: 0.8rem !important;
+  color: var(--crt-phosphor);
+}
+
+.boot-post__cursor {
+  animation: cursor-blink 480ms steps(1, end) infinite;
+}
+
+@keyframes fallback-singularity-spin {
+  to {
+    transform: translate(-50%, -50%) rotate(1turn);
+  }
+}
+
+@keyframes event-horizon-pulse {
+  50% {
+    opacity: 0.38;
+    transform: scale(1.12);
+  }
+}
+
+@keyframes singularity-progress {
+  58% {
+    transform: scaleX(0.62);
+  }
+
+  86% {
+    transform: scaleX(0.82);
+  }
+
+  100% {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes power-line-expand {
+  0% {
+    width: 0;
+    opacity: 0;
+  }
+
+  34% {
+    width: 84%;
+    opacity: 1;
+  }
+
+  100% {
+    width: 100%;
+    opacity: 0;
+  }
+}
+
+@keyframes crt-power-on {
+  0% {
+    opacity: 0;
+    filter: brightness(8);
+    transform: scaleX(0.08) scaleY(0.002);
+  }
+
+  34% {
+    opacity: 1;
+    filter: brightness(5);
+    transform: scaleX(1) scaleY(0.003);
+  }
+
+  62% {
+    filter: brightness(2.2);
+    transform: scaleX(1) scaleY(0.1);
+  }
+
+  100% {
+    filter: brightness(1);
+    transform: scale(1);
+  }
+}
+
+@keyframes post-line-appear {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .crt-screen::after {
@@ -436,7 +722,27 @@ select {
     transition: none;
   }
 
-  .terminal-cursor {
+  .terminal-cursor,
+  .black-hole-loader__fallback,
+  .black-hole-loader__core::after,
+  .boot-post__cursor {
     animation: none;
+  }
+
+  .crt-workspace--power-on .crt-screen {
+    animation: none;
+  }
+
+  .boot-power-line span,
+  .boot-loader-progress span {
+    animation: none;
+    opacity: 0.7;
+    transform: scaleX(1);
+  }
+
+  .boot-post p {
+    animation: none;
+    opacity: 1;
+    transform: none;
   }
 }
