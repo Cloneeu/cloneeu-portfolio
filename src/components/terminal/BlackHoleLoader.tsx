@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
+import { useTerminalPreferences } from "@/components/terminal/TerminalPreferences";
 
 const PARTICLE_COUNT = 2800;
 
@@ -68,6 +69,7 @@ void main() {
 export function BlackHoleLoader() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const { phosphor } = useTerminalPreferences();
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -128,7 +130,7 @@ export function BlackHoleLoader() {
       uTime: { value: 0 },
       uAspect: { value: 1 },
       uPixelRatio: { value: 1 },
-      uPhosphor: { value: new THREE.Color(0.486, 1, 0.478) },
+      uPhosphor: { value: new THREE.Color(...phosphor.normalizedRgb) },
     };
     const material = new THREE.ShaderMaterial({
       uniforms,
@@ -206,7 +208,7 @@ export function BlackHoleLoader() {
       material.dispose();
       renderer.dispose();
     };
-  }, []);
+  }, [phosphor.normalizedRgb]);
 
   return (
     <div ref={containerRef} className="black-hole-loader" aria-hidden="true">

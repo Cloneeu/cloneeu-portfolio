@@ -15,7 +15,8 @@ export type PrintableTerminalResult =
   | { action: "experience" }
   | { action: "projects" }
   | { action: "project"; projectId: string }
-  | { action: "contact" };
+  | { action: "contact" }
+  | { action: "settings" };
 
 export type TerminalCommandResult =
   | PrintableTerminalResult
@@ -91,6 +92,7 @@ export const GUIDED_COMMANDS = [
   "experience",
   "projects",
   "contact",
+  "settings",
   "help",
 ] as const;
 
@@ -161,11 +163,7 @@ export function executeTerminalCommand(input: string): TerminalCommandResult | n
     case "contact":
       return { action: "contact" };
     case "settings":
-      return {
-        action: "print",
-        tone: "muted",
-        lines: ["SETTINGS module detected.", "Preference controls will be connected soon."],
-      };
+      return { action: "settings" };
     case "clear":
       return { action: "clear" };
     case "reboot":

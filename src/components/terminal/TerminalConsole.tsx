@@ -24,6 +24,7 @@ import {
   SkillsOutput,
 } from "@/components/terminal/PortfolioOutputs";
 import { ProjectLibrary } from "@/components/terminal/ProjectLibrary";
+import { SettingsOutput } from "@/components/terminal/SettingsOutput";
 
 const systemChecks = [
   "PHOSPHOR DISPLAY ........ ONLINE",
@@ -91,7 +92,11 @@ export function TerminalConsole({ isReady }: TerminalConsoleProps) {
         { id: nextEntryId.current++, command, output: result },
       ]);
 
-      if (result.action !== "projects" && result.action !== "project") {
+      if (
+        result.action !== "projects" &&
+        result.action !== "project" &&
+        result.action !== "settings"
+      ) {
         focusInput();
       }
     },
@@ -303,6 +308,10 @@ function ConsoleOutputView({
 
   if (output.action === "contact") {
     return <ContactOutput />;
+  }
+
+  if (output.action === "settings") {
+    return <SettingsOutput />;
   }
 
   return (
