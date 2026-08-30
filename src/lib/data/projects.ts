@@ -25,8 +25,8 @@ export const projects: Project[] = [
         id: "3",
         title: "This Portfolio",
         description:
-            "My personal portfolio built from scratch using Next.js 15, Tailwind CSS v4, Framer Motion, and a fully modular component architecture.",
-        tags: ["Next.js", "Tailwind CSS", "Framer Motion", "TypeScript"],
+            "An immersive retro terminal portfolio built with Next.js 16, TypeScript, Three.js, and custom CRT shaders.",
+        tags: ["Next.js", "TypeScript", "Three.js", "Tailwind CSS"],
         githubUrl: "https://github.com/Cloneeu/cloneeu-portfolio",
         liveUrl: "",
         featured: true,

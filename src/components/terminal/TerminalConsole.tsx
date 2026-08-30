@@ -17,6 +17,13 @@ import {
   type PrintableTerminalResult,
 } from "@/lib/terminal/commands";
 import { REBOOT_EVENT } from "@/hooks/useBootSequence";
+import {
+  AboutOutput,
+  ContactOutput,
+  ExperienceOutput,
+  SkillsOutput,
+} from "@/components/terminal/PortfolioOutputs";
+import { ProjectLibrary } from "@/components/terminal/ProjectLibrary";
 
 const systemChecks = [
   "PHOSPHOR DISPLAY ........ ONLINE",
@@ -83,7 +90,10 @@ export function TerminalConsole({ isReady }: TerminalConsoleProps) {
         ...current,
         { id: nextEntryId.current++, command, output: result },
       ]);
-      focusInput();
+
+      if (result.action !== "projects" && result.action !== "project") {
+        focusInput();
+      }
     },
     [focusInput],
   );
@@ -269,6 +279,30 @@ function ConsoleOutputView({
         </div>
       </div>
     );
+  }
+
+  if (output.action === "about") {
+    return <AboutOutput />;
+  }
+
+  if (output.action === "skills") {
+    return <SkillsOutput />;
+  }
+
+  if (output.action === "experience") {
+    return <ExperienceOutput />;
+  }
+
+  if (output.action === "projects") {
+    return <ProjectLibrary />;
+  }
+
+  if (output.action === "project") {
+    return <ProjectLibrary initialProjectId={output.projectId} />;
+  }
+
+  if (output.action === "contact") {
+    return <ContactOutput />;
   }
 
   return (

@@ -1,3 +1,5 @@
+import { projects } from "@/lib/data";
+
 export interface TerminalCommandDefinition {
   name: string;
   aliases: readonly string[];
@@ -7,7 +9,13 @@ export interface TerminalCommandDefinition {
 
 export type PrintableTerminalResult =
   | { action: "print"; lines: readonly string[]; tone?: "normal" | "muted" | "error" }
-  | { action: "help" };
+  | { action: "help" }
+  | { action: "about" }
+  | { action: "skills" }
+  | { action: "experience" }
+  | { action: "projects" }
+  | { action: "project"; projectId: string }
+  | { action: "contact" };
 
 export type TerminalCommandResult =
   | PrintableTerminalResult
@@ -115,15 +123,17 @@ export function executeTerminalCommand(input: string): TerminalCommandResult | n
     case "help":
       return { action: "help" };
     case "about":
-      return mountedDirectory("ABOUT", "Personal profile channel is ready for data sync.");
+      return { action: "about" };
     case "skills":
-      return mountedDirectory("SKILLS", "Technology archive is ready for data sync.");
+      return { action: "skills" };
     case "experience":
-      return mountedDirectory("EXPERIENCE", "Timeline archive is ready for data sync.");
+      return { action: "experience" };
     case "projects":
-      return mountedDirectory("PROJECTS", "Project index is ready for data sync.");
-    case "project":
-      if (!args[0]) {
+      return { action: "projects" };
+    case "project": {
+      const query = args.join(" ").toLowerCase();
+
+      if (!query) {
         return {
           action: "print",
           tone: "error",
@@ -131,9 +141,25 @@ export function executeTerminalCommand(input: string): TerminalCommandResult | n
         };
       }
 
-      return mountedDirectory(`PROJECTS/${args[0]}`, "Project record channel is ready.");
+      const project = projects.find(
+        (item) => item.id.toLowerCase() === query || item.title.toLowerCase() === query,
+      );
+
+      if (!project) {
+        return {
+          action: "print",
+          tone: "error",
+          lines: [
+            `Project not found: ${args.join(" ")}`,
+            `Available records: ${projects.map((item) => item.id).join(", ")}`,
+          ],
+        };
+      }
+
+      return { action: "project", projectId: project.id };
+    }
     case "contact":
-      return mountedDirectory("CONTACT", "Communication channel is ready for data sync.");
+      return { action: "contact" };
     case "settings":
       return {
         action: "print",
@@ -161,11 +187,4 @@ export function getCommandCompletions(input: string) {
   }
 
   return autocompleteTokens.filter((token) => token.startsWith(normalized));
-}
-
-function mountedDirectory(path: string, message: string): PrintableTerminalResult {
-  return {
-    action: "print",
-    lines: [`[MOUNTED] /${path}`, message],
-  };
 }
