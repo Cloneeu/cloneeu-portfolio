@@ -52,7 +52,7 @@ select {
   min-height: 100svh;
   place-items: center;
   overflow: hidden;
-  padding: clamp(0.5rem, 2.4vw, 2rem);
+  padding: 0;
   background:
     radial-gradient(circle at 50% 44%, rgba(36, 100, 45, 0.12), transparent 43%),
     linear-gradient(145deg, #070a08 0%, #010302 48%, #040705 100%);
@@ -81,17 +81,14 @@ select {
 
 .crt-terminal {
   position: relative;
-  width: min(100%, 92rem);
-  height: min(90svh, 56rem);
-  min-height: 34rem;
-  padding: clamp(0.35rem, 0.75vw, 0.7rem);
-  border: 1px solid rgba(223, 236, 222, 0.1);
-  border-radius: clamp(1.25rem, 3vw, 3rem) / clamp(1rem, 2.4vw, 2.35rem);
-  background: linear-gradient(145deg, #181c18, #080b08 40%, #101410);
-  box-shadow:
-    0 2.4rem 6rem rgba(0, 0, 0, 0.72),
-    0 0 0 0.2rem rgba(0, 0, 0, 0.85),
-    inset 0 1px rgba(255, 255, 255, 0.08);
+  width: 100vw;
+  height: 100vh;
+  height: 100svh;
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: var(--crt-black);
 }
 
 .crt-screen {
@@ -101,14 +98,31 @@ select {
   height: 100%;
   grid-template-rows: auto 1fr auto;
   overflow: hidden;
-  border: 1px solid var(--crt-border);
-  border-radius: clamp(1rem, 2.7vw, 2.5rem) / clamp(0.85rem, 2.1vw, 2rem);
+  border: 0;
+  border-radius: 0;
   background:
     radial-gradient(ellipse at center, rgba(12, 36, 15, 0.7) 0%, rgba(2, 11, 5, 0.96) 62%, #010402 100%);
   box-shadow:
-    inset 0 0 1.5rem rgba(0, 0, 0, 0.96),
-    inset 0 0 7rem rgba(0, 0, 0, 0.78),
-    0 0 2rem rgba(var(--crt-phosphor-rgb), 0.05);
+    inset 0 0 1.6rem rgba(0, 0, 0, 0.96),
+    inset 0 0 9rem rgba(0, 0, 0, 0.72),
+    0 0 3rem rgba(var(--crt-phosphor-rgb), 0.045);
+}
+
+.crt-filter-definitions {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.crt-content {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  width: 100%;
+  height: 100%;
+  grid-template-rows: auto 1fr auto;
 }
 
 .crt-screen::after {
@@ -116,7 +130,9 @@ select {
   z-index: 5;
   inset: 0;
   border-radius: inherit;
-  background: radial-gradient(ellipse at center, transparent 56%, rgba(0, 0, 0, 0.45) 86%, rgba(0, 0, 0, 0.82) 100%);
+  background:
+    radial-gradient(ellipse at center, transparent 62%, rgba(0, 0, 0, 0.18) 82%, rgba(0, 0, 0, 0.64) 100%),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.16), transparent 4% 96%, rgba(0, 0, 0, 0.16));
   content: "";
   pointer-events: none;
 }
@@ -127,8 +143,9 @@ select {
   inset: 0;
   border-radius: inherit;
   background:
-    linear-gradient(112deg, rgba(255, 255, 255, 0.035), transparent 18% 72%, rgba(255, 255, 255, 0.018)),
-    radial-gradient(ellipse at 34% 3%, rgba(255, 255, 255, 0.055), transparent 35%);
+    linear-gradient(112deg, rgba(236, 255, 240, 0.032), transparent 19% 68%, rgba(255, 255, 255, 0.012)),
+    radial-gradient(ellipse 54% 36% at 24% -8%, rgba(225, 255, 230, 0.075), transparent 72%),
+    radial-gradient(ellipse 88% 78% at center, transparent 67%, rgba(183, 255, 193, 0.028) 91%, transparent 100%);
   mix-blend-mode: screen;
   pointer-events: none;
 }
@@ -157,10 +174,10 @@ select {
     to bottom,
     transparent 0,
     transparent 2px,
-    rgba(0, 0, 0, 0.3) 3px,
-    rgba(0, 0, 0, 0.3) 4px
+    rgba(0, 0, 0, 0.42) 3px,
+    rgba(0, 0, 0, 0.42) 4px
   );
-  opacity: 0.34;
+  opacity: 0.52;
   pointer-events: none;
   transition: opacity 180ms ease-out;
 }
@@ -172,7 +189,6 @@ select {
 .terminal-topbar,
 .terminal-commandline {
   position: relative;
-  z-index: 2;
   display: grid;
   align-items: center;
   min-height: 3rem;
@@ -198,13 +214,13 @@ select {
 
 .terminal-viewport {
   position: relative;
-  z-index: 2;
   align-self: center;
-  width: min(100%, 68rem);
+  width: 100%;
   max-height: 100%;
   overflow: auto;
-  margin-inline: auto;
-  padding: clamp(1.5rem, 5vh, 4rem) clamp(1.25rem, 5vw, 4rem);
+  margin: 0;
+  padding: clamp(1.5rem, 5vh, 4rem) clamp(1.25rem, 6vw, 7rem);
+  filter: url("#crt-content-warp");
   scrollbar-width: thin;
   scrollbar-color: var(--crt-dim) transparent;
   text-shadow:
@@ -345,16 +361,6 @@ select {
   text-transform: uppercase;
 }
 
-.crt-hardware-label {
-  position: absolute;
-  right: clamp(1rem, 3vw, 3rem);
-  bottom: clamp(0.15rem, 1vw, 0.7rem);
-  margin: 0;
-  color: rgba(203, 216, 204, 0.22);
-  font-size: clamp(0.5rem, 0.7vw, 0.62rem);
-  letter-spacing: 0.12em;
-}
-
 @keyframes cursor-blink {
   0%,
   45% {
@@ -390,21 +396,8 @@ select {
 }
 
 @media (max-width: 700px) {
-  .crt-workspace {
-    padding: 0;
-  }
-
   .crt-terminal {
-    width: 100%;
-    height: 100svh;
     min-height: 30rem;
-    padding: 0;
-    border: 0;
-    border-radius: 0;
-  }
-
-  .crt-screen {
-    border-radius: 0;
   }
 
   .terminal-topbar,
@@ -417,8 +410,7 @@ select {
   }
 
   .terminal-topbar__center,
-  .terminal-status,
-  .crt-hardware-label {
+  .terminal-status {
     display: none;
   }
 
@@ -430,7 +422,6 @@ select {
 
 @media (max-height: 650px) and (min-width: 701px) {
   .crt-terminal {
-    height: calc(100svh - 1rem);
     min-height: 0;
   }
 
