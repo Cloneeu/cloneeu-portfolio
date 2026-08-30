@@ -25,7 +25,7 @@ export const projects: Project[] = [
         id: "3",
         title: "This Portfolio",
         description:
-            "My personal portfolio built from scratch using Next.js 16, Tailwind CSS v4, Framer Motion, and a fully modular component architecture.",
+            "My personal portfolio built from scratch using Next.js 15, Tailwind CSS v4, Framer Motion, and a fully modular component architecture.",
         tags: ["Next.js", "Tailwind CSS", "Framer Motion", "TypeScript"],
         githubUrl: "https://github.com/Cloneeu/cloneeu-portfolio",
         liveUrl: "",

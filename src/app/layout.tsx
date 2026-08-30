@@ -13,9 +13,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Cloneeu — Developer",
+  title: "Cloneeu — Full-Stack Developer",
   description:
-    "Personal portfolio of Cloneeu — a developer building things for everyone.",
+    "Personal portfolio of Cloneeu — a full-stack developer building things for the web.",
 };
 
 export default function RootLayout({
