@@ -1,5 +1,7 @@
 import { ImageResponse } from "next/og";
 
+export const dynamic = "force-static";
+
 export const alt = "Cloneeu software engineer terminal portfolio";
 export const size = {
   width: 1200,
