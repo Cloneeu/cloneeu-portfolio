@@ -1,6 +1,13 @@
 "use client";
 
-import { forwardRef, type KeyboardEvent, useEffect, useRef, useState } from "react";
+import {
+  forwardRef,
+  type KeyboardEvent,
+  useEffect,
+  useId,
+  useRef,
+  useState,
+} from "react";
 import { projects } from "@/lib/data";
 import type { Project } from "@/types";
 
@@ -9,6 +16,7 @@ interface ProjectLibraryProps {
 }
 
 export function ProjectLibrary({ initialProjectId }: ProjectLibraryProps) {
+  const titleId = useId();
   const initialIndex = Math.max(
     0,
     projects.findIndex((project) => project.id === initialProjectId),
@@ -78,11 +86,11 @@ export function ProjectLibrary({ initialProjectId }: ProjectLibraryProps) {
   }
 
   return (
-    <section className="project-library" aria-labelledby="project-library-title">
+    <section className="project-library" aria-labelledby={titleId}>
       <header className="project-library__header">
         <div>
           <span>[MOUNTED] /PROJECTS/LIBRARY</span>
-          <h2 id="project-library-title">PROJECT ARCHIVE</h2>
+          <h2 id={titleId}>PROJECT ARCHIVE</h2>
         </div>
         <p aria-label="Keyboard instructions">[← →] SELECT&nbsp;&nbsp; [ENTER] OPEN</p>
       </header>
@@ -147,6 +155,7 @@ const ProjectDetail = forwardRef<HTMLElement, ProjectDetailProps>(function Proje
   { project, onBack },
   ref,
 ) {
+  const titleId = useId();
   const handleKeyDown = (event: KeyboardEvent<HTMLElement>) => {
     if (event.key === "Escape") {
       event.preventDefault();
@@ -159,13 +168,13 @@ const ProjectDetail = forwardRef<HTMLElement, ProjectDetailProps>(function Proje
       ref={ref}
       className="project-detail"
       tabIndex={-1}
-      aria-labelledby={`project-${project.id}-title`}
+      aria-labelledby={titleId}
       onKeyDown={handleKeyDown}
     >
       <header className="project-detail__header">
         <div>
           <span>[OPEN] /PROJECTS/{project.id.padStart(2, "0")}.RECORD</span>
-          <h2 id={`project-${project.id}-title`}>{project.title}</h2>
+          <h2 id={titleId}>{project.title}</h2>
         </div>
         <span>{project.featured ? "FEATURED RECORD" : "ARCHIVED RECORD"}</span>
       </header>
@@ -183,11 +192,11 @@ const ProjectDetail = forwardRef<HTMLElement, ProjectDetailProps>(function Proje
 
         <div className="project-detail__links">
           <a href={project.githubUrl} target="_blank" rel="noreferrer">
-            SOURCE CODE ↗
+            SOURCE CODE ↗<span className="sr-only"> (opens in a new tab)</span>
           </a>
           {project.liveUrl && (
             <a href={project.liveUrl} target="_blank" rel="noreferrer">
-              LIVE SYSTEM ↗
+              LIVE SYSTEM ↗<span className="sr-only"> (opens in a new tab)</span>
             </a>
           )}
         </div>

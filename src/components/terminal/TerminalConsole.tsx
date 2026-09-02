@@ -200,7 +200,13 @@ export function TerminalConsole({ isReady }: TerminalConsoleProps) {
         className="terminal-viewport terminal-console"
         onClick={handleViewportClick}
       >
-        <div className="terminal-history" role="log" aria-live="polite" aria-relevant="additions">
+        <div
+          className="terminal-history"
+          role="log"
+          aria-label="Terminal output"
+          aria-live="polite"
+          aria-relevant="additions"
+        >
           {entries.map((entry) => (
             <ConsoleEntryView key={entry.id} entry={entry} onCommand={runCommand} />
           ))}
@@ -212,6 +218,10 @@ export function TerminalConsole({ isReady }: TerminalConsoleProps) {
           <label className="sr-only" htmlFor="terminal-input">
             Terminal command
           </label>
+          <p id="terminal-instructions" className="sr-only">
+            Enter a command. Use the up and down arrow keys for command history, Tab to
+            autocomplete, and Control plus L to clear the terminal.
+          </p>
           <span className="terminal-prompt__user">guest@cloneeu</span>
           <span className="terminal-prompt__path">:~</span>
           <span className="terminal-prompt__symbol">$</span>
@@ -219,6 +229,7 @@ export function TerminalConsole({ isReady }: TerminalConsoleProps) {
             ref={inputRef}
             id="terminal-input"
             className="terminal-command-input"
+            aria-describedby="terminal-instructions terminal-status"
             value={input}
             onChange={(event) => {
               setInput(event.target.value);
@@ -229,10 +240,11 @@ export function TerminalConsole({ isReady }: TerminalConsoleProps) {
             autoComplete="off"
             autoCapitalize="none"
             autoCorrect="off"
+            enterKeyHint="send"
             spellCheck={false}
           />
         </form>
-        <span className="terminal-status" aria-live="polite">
+        <span id="terminal-status" className="terminal-status" aria-live="polite">
           {completionMessage || "INPUT // READY"}
         </span>
       </footer>

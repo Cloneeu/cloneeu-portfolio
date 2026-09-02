@@ -149,17 +149,27 @@ void main() {
 
 interface CrtShaderProps {
   config?: CrtShaderConfig;
+  phosphor?: readonly [number, number, number];
 }
 
-export function CrtShader({ config = DEFAULT_CRT_SHADER_CONFIG }: CrtShaderProps) {
+export function CrtShader({
+  config = DEFAULT_CRT_SHADER_CONFIG,
+  phosphor,
+}: CrtShaderProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const configRef = useRef(config);
+  const configRef = useRef<CrtShaderConfig>({
+    ...config,
+    phosphor: phosphor ?? config.phosphor,
+  });
   const requestRenderRef = useRef<(() => void) | null>(null);
 
   useEffect(() => {
-    configRef.current = config;
+    configRef.current = {
+      ...config,
+      phosphor: phosphor ?? config.phosphor,
+    };
     requestRenderRef.current?.();
-  }, [config]);
+  }, [config, phosphor]);
 
   useEffect(() => {
     const canvas = canvasRef.current;

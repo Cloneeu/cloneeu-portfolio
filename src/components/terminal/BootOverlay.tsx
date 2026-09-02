@@ -1,7 +1,18 @@
 "use client";
 
-import { BlackHoleLoader } from "@/components/terminal/BlackHoleLoader";
+import dynamic from "next/dynamic";
 import type { BootPhase } from "@/hooks/useBootSequence";
+
+const BlackHoleLoader = dynamic(
+  () =>
+    import("@/components/terminal/BlackHoleLoader").then(
+      (module) => module.BlackHoleLoader,
+    ),
+  {
+    ssr: false,
+    loading: () => <BlackHoleFallback />,
+  },
+);
 
 const postLines = [
   "CLONEEU BIOS v3.1.84",
@@ -63,10 +74,24 @@ export function BootOverlay({ phase, onSkip }: BootOverlayProps) {
       )}
 
       {phase !== "checking" && (
-        <button type="button" className="boot-skip" onClick={onSkip}>
-          SKIP <kbd>ESC</kbd>
+        <button
+          type="button"
+          className="boot-skip"
+          aria-label="Skip boot sequence"
+          onClick={onSkip}
+        >
+          SKIP <kbd aria-hidden="true">ESC</kbd>
         </button>
       )}
+    </div>
+  );
+}
+
+function BlackHoleFallback() {
+  return (
+    <div className="black-hole-loader" aria-hidden="true">
+      <div className="black-hole-loader__fallback" />
+      <div className="black-hole-loader__core" />
     </div>
   );
 }

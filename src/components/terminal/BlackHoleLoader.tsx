@@ -4,7 +4,9 @@ import { useEffect, useRef } from "react";
 import * as THREE from "three";
 import { useTerminalPreferences } from "@/components/terminal/TerminalPreferences";
 
-const PARTICLE_COUNT = 2800;
+const DESKTOP_PARTICLE_COUNT = 2800;
+const MOBILE_PARTICLE_COUNT = 1800;
+const FRAME_INTERVAL = 1000 / 45;
 
 const VERTEX_SHADER = `
 attribute float aRadius;
@@ -99,16 +101,20 @@ export function BlackHoleLoader() {
     const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0.1, 10);
     camera.position.z = 1;
 
-    const positions = new Float32Array(PARTICLE_COUNT * 3);
-    const radii = new Float32Array(PARTICLE_COUNT);
-    const angles = new Float32Array(PARTICLE_COUNT);
-    const speeds = new Float32Array(PARTICLE_COUNT);
-    const seeds = new Float32Array(PARTICLE_COUNT);
-    const depths = new Float32Array(PARTICLE_COUNT);
+    const particleCount = window.matchMedia("(max-width: 700px)").matches
+      ? MOBILE_PARTICLE_COUNT
+      : DESKTOP_PARTICLE_COUNT;
+
+    const positions = new Float32Array(particleCount * 3);
+    const radii = new Float32Array(particleCount);
+    const angles = new Float32Array(particleCount);
+    const speeds = new Float32Array(particleCount);
+    const seeds = new Float32Array(particleCount);
+    const depths = new Float32Array(particleCount);
     const random = createSeededRandom(0xc10ee);
 
-    for (let index = 0; index < PARTICLE_COUNT; index += 1) {
-      const isEventHorizon = index < PARTICLE_COUNT * 0.24;
+    for (let index = 0; index < particleCount; index += 1) {
+      const isEventHorizon = index < particleCount * 0.24;
       radii[index] = isEventHorizon
         ? 0.115 + random() * 0.13
         : 0.2 + Math.pow(random(), 0.72) * 0.83;
@@ -150,6 +156,8 @@ export function BlackHoleLoader() {
     let renderedWidth = 0;
     let renderedHeight = 0;
     let renderedPixelRatio = 0;
+    let lastFrameTime = -Infinity;
+    let isVisible = !document.hidden;
 
     const resize = () => {
       const bounds = container.getBoundingClientRect();
@@ -175,10 +183,27 @@ export function BlackHoleLoader() {
     };
 
     const draw = (timestamp: number) => {
-      uniforms.uTime.value = (timestamp - startTime) / 1000;
-      renderer.render(scene, camera);
-      container.classList.add("black-hole-loader--ready");
+      if (!isVisible) {
+        return;
+      }
+
+      if (timestamp - lastFrameTime >= FRAME_INTERVAL) {
+        uniforms.uTime.value = (timestamp - startTime) / 1000;
+        renderer.render(scene, camera);
+        container.classList.add("black-hole-loader--ready");
+        lastFrameTime = timestamp;
+      }
+
       animationFrame = window.requestAnimationFrame(draw);
+    };
+
+    const handleVisibilityChange = () => {
+      isVisible = !document.hidden;
+      window.cancelAnimationFrame(animationFrame);
+
+      if (isVisible) {
+        animationFrame = window.requestAnimationFrame(draw);
+      }
     };
 
     const handleContextLost = (event: Event) => {
@@ -194,6 +219,7 @@ export function BlackHoleLoader() {
 
     const resizeObserver = new ResizeObserver(resize);
     resizeObserver.observe(container);
+    document.addEventListener("visibilitychange", handleVisibilityChange);
     canvas.addEventListener("webglcontextlost", handleContextLost);
     canvas.addEventListener("webglcontextrestored", handleContextRestored);
     resize();
@@ -202,6 +228,7 @@ export function BlackHoleLoader() {
     return () => {
       window.cancelAnimationFrame(animationFrame);
       resizeObserver.disconnect();
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
       canvas.removeEventListener("webglcontextlost", handleContextLost);
       canvas.removeEventListener("webglcontextrestored", handleContextRestored);
       geometry.dispose();

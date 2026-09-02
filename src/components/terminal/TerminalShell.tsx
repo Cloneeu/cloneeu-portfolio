@@ -1,11 +1,7 @@
 "use client";
 
-import { useMemo } from "react";
+import dynamic from "next/dynamic";
 import { BootOverlay } from "@/components/terminal/BootOverlay";
-import {
-  CrtShader,
-  DEFAULT_CRT_SHADER_CONFIG,
-} from "@/components/terminal/CrtShader";
 import { CrtWarpFilter } from "@/components/terminal/CrtWarpFilter";
 import { TerminalConsole } from "@/components/terminal/TerminalConsole";
 import {
@@ -13,6 +9,11 @@ import {
   useTerminalPreferences,
 } from "@/components/terminal/TerminalPreferences";
 import { useBootSequence } from "@/hooks/useBootSequence";
+
+const CrtShader = dynamic(
+  () => import("@/components/terminal/CrtShader").then((module) => module.CrtShader),
+  { ssr: false },
+);
 
 export function TerminalShell() {
   return (
@@ -26,22 +27,18 @@ function TerminalMachine() {
   const { phase, skipBoot } = useBootSequence();
   const { phosphor } = useTerminalPreferences();
   const isReady = phase === "ready";
-  const shaderConfig = useMemo(
-    () => ({
-      ...DEFAULT_CRT_SHADER_CONFIG,
-      phosphor: phosphor.normalizedRgb,
-    }),
-    [phosphor.normalizedRgb],
-  );
 
   return (
     <main className={`crt-workspace crt-workspace--${phase}`}>
+      <a className="skip-link" href="#terminal-input">
+        Skip to terminal prompt
+      </a>
       <div className="crt-ambient-glow" aria-hidden="true" />
       <CrtWarpFilter />
 
       <section className="crt-terminal" aria-label="Cloneeu personal terminal">
         <div className="crt-screen">
-          <CrtShader config={shaderConfig} />
+          {isReady && <CrtShader phosphor={phosphor.normalizedRgb} />}
           <div className="crt-scanlines" aria-hidden="true" />
           <div className="crt-glass-reflection" aria-hidden="true" />
 

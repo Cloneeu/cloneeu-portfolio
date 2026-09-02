@@ -43,6 +43,64 @@ select {
   font: inherit;
 }
 
+.skip-link {
+  position: fixed;
+  z-index: 100;
+  top: 0.75rem;
+  left: 0.75rem;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid var(--crt-phosphor);
+  background: var(--crt-black);
+  color: var(--crt-phosphor);
+  font-size: 0.75rem;
+  text-decoration: none;
+  transform: translateY(calc(-100% - 1rem));
+  transition: transform 120ms ease;
+}
+
+.skip-link:focus {
+  outline: 2px solid var(--crt-phosphor);
+  outline-offset: 0.2rem;
+  transform: translateY(0);
+}
+
+.noscript-portfolio {
+  position: fixed;
+  z-index: 200;
+  inset: 0;
+  overflow: auto;
+  padding: clamp(2rem, 8vw, 7rem);
+  background: #010302;
+  color: #7cff7a;
+  font-family: "Courier New", monospace;
+}
+
+.noscript-portfolio h1 {
+  font-size: clamp(1.7rem, 6vw, 4rem);
+}
+
+.noscript-portfolio h2 {
+  margin-top: 2rem;
+}
+
+.noscript-portfolio ul {
+  display: grid;
+  gap: 1rem;
+  max-width: 58rem;
+  padding-left: 1.2rem;
+}
+
+.noscript-portfolio li span {
+  display: block;
+  margin-top: 0.25rem;
+  color: rgba(124, 255, 122, 0.72);
+}
+
+.noscript-portfolio a {
+  color: inherit;
+  text-underline-offset: 0.2rem;
+}
+
 /* Immersive CRT foundation */
 .crt-workspace {
   isolation: isolate;
@@ -611,9 +669,10 @@ select {
   letter-spacing: 0.1em;
 }
 
-.terminal-record__header p {
+.terminal-record__header h2 {
   margin: 0;
   color: var(--crt-phosphor);
+  font-size: inherit;
   font-weight: 650;
   letter-spacing: 0.12em;
 }
@@ -1284,6 +1343,14 @@ select {
   font-size: 0.68rem;
 }
 
+.settings-color-status {
+  min-height: 1.1rem;
+  margin: 0.35rem 0 0;
+  color: var(--crt-dim);
+  font-size: 0.58rem;
+  line-height: 1.45;
+}
+
 .settings-preview {
   display: flex;
   min-width: 0;
@@ -1703,6 +1770,10 @@ select {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .skip-link {
+    transition: none;
+  }
+
   .crt-shader {
     transition: none;
   }
@@ -1740,5 +1811,43 @@ select {
 
   .project-detail {
     animation: none;
+  }
+}
+
+@media (prefers-contrast: more) {
+  :root {
+    --crt-muted: rgba(var(--crt-phosphor-rgb), 0.86);
+    --crt-dim: rgba(var(--crt-phosphor-rgb), 0.68);
+    --crt-border: rgba(var(--crt-phosphor-rgb), 0.52);
+  }
+
+  .crt-shader,
+  .crt-glass-reflection {
+    opacity: 0.42;
+  }
+
+  .terminal-viewport {
+    text-shadow: 0 0 0.2rem rgba(var(--crt-phosphor-rgb), 0.35);
+  }
+}
+
+@media (forced-colors: active) {
+  .crt-shader,
+  .crt-scanlines,
+  .crt-glass-reflection,
+  .crt-screen::after,
+  .crt-workspace::before {
+    display: none !important;
+  }
+
+  .terminal-viewport {
+    filter: none;
+    text-shadow: none;
+  }
+
+  .project-book--selected,
+  .settings-preset--selected {
+    outline: 3px solid Highlight;
+    outline-offset: 2px;
   }
 }

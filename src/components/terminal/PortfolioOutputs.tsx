@@ -1,14 +1,21 @@
+import { useId } from "react";
 import { experiences, personal, skillCategories, skills } from "@/lib/data";
 
 export function AboutOutput() {
+  const titleId = useId();
+
   return (
-    <section className="terminal-record" aria-labelledby="about-record-title">
-      <RecordHeader path="/ABOUT/ALEXANDRO.PROFILE" title="PERSONNEL RECORD" />
+    <section className="terminal-record" aria-labelledby={titleId}>
+      <RecordHeader
+        path="/ABOUT/ALEXANDRO.PROFILE"
+        title="PERSONNEL RECORD"
+        titleId={titleId}
+      />
 
       <dl className="terminal-record__metadata">
         <div>
           <dt>NAME</dt>
-          <dd id="about-record-title">{personal.displayName}</dd>
+          <dd>{personal.displayName}</dd>
         </div>
         <div>
           <dt>ROLE</dt>
@@ -31,12 +38,15 @@ export function AboutOutput() {
 }
 
 export function SkillsOutput() {
+  const titleId = useId();
+
   return (
-    <section className="terminal-record" aria-labelledby="skills-record-title">
-      <RecordHeader path="/SKILLS/TECH.INDEX" title="TECHNOLOGY ARCHIVE" />
-      <h2 id="skills-record-title" className="sr-only">
-        Skills
-      </h2>
+    <section className="terminal-record" aria-labelledby={titleId}>
+      <RecordHeader
+        path="/SKILLS/TECH.INDEX"
+        title="TECHNOLOGY ARCHIVE"
+        titleId={titleId}
+      />
 
       <div className="skill-archive">
         {skillCategories.map((category, categoryIndex) => (
@@ -60,12 +70,15 @@ export function SkillsOutput() {
 }
 
 export function ExperienceOutput() {
+  const titleId = useId();
+
   return (
-    <section className="terminal-record" aria-labelledby="experience-record-title">
-      <RecordHeader path="/EXPERIENCE/TIMELINE.LOG" title="EXPERIENCE LOG" />
-      <h2 id="experience-record-title" className="sr-only">
-        Experience
-      </h2>
+    <section className="terminal-record" aria-labelledby={titleId}>
+      <RecordHeader
+        path="/EXPERIENCE/TIMELINE.LOG"
+        title="EXPERIENCE LOG"
+        titleId={titleId}
+      />
 
       <ol className="experience-log">
         {experiences.map((experience, index) => (
@@ -91,12 +104,15 @@ export function ExperienceOutput() {
 }
 
 export function ContactOutput() {
+  const titleId = useId();
+
   return (
-    <section className="terminal-record" aria-labelledby="contact-record-title">
-      <RecordHeader path="/CONTACT/CHANNELS.NET" title="COMMUNICATION CHANNELS" />
-      <h2 id="contact-record-title" className="sr-only">
-        Contact
-      </h2>
+    <section className="terminal-record" aria-labelledby={titleId}>
+      <RecordHeader
+        path="/CONTACT/CHANNELS.NET"
+        title="COMMUNICATION CHANNELS"
+        titleId={titleId}
+      />
 
       <p className="terminal-record__body">
         The following verified channels are currently indexed by this machine.
@@ -117,11 +133,19 @@ export function ContactOutput() {
   );
 }
 
-function RecordHeader({ path, title }: { path: string; title: string }) {
+function RecordHeader({
+  path,
+  title,
+  titleId,
+}: {
+  path: string;
+  title: string;
+  titleId: string;
+}) {
   return (
     <header className="terminal-record__header">
       <span>[MOUNTED] {path}</span>
-      <p>{title}</p>
+      <h2 id={titleId}>{title}</h2>
     </header>
   );
 }
@@ -137,6 +161,7 @@ function TerminalLink({ href, children }: { href: string; children: React.ReactN
       rel={external ? "noreferrer" : undefined}
     >
       {children}
+      {external && <span className="sr-only"> (opens in a new tab)</span>}
     </a>
   );
 }

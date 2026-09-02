@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import {
   PHOSPHOR_PRESETS,
   useTerminalPreferences,
@@ -9,7 +9,10 @@ import {
 export function SettingsOutput() {
   const { phosphor, selectPreset, setCustomColor, resetPhosphor } =
     useTerminalPreferences();
+  const titleId = useId();
+  const colorInputId = useId();
   const panelRef = useRef<HTMLElement>(null);
+  const [colorMessage, setColorMessage] = useState("");
 
   useEffect(() => {
     const frame = window.requestAnimationFrame(() => {
@@ -24,12 +27,12 @@ export function SettingsOutput() {
       ref={panelRef}
       className="settings-panel"
       tabIndex={-1}
-      aria-labelledby="settings-panel-title"
+      aria-labelledby={titleId}
     >
       <header className="settings-panel__header">
         <div>
           <span>[MOUNTED] /SYSTEM/DISPLAY.CONFIG</span>
-          <h2 id="settings-panel-title">PHOSPHOR CALIBRATION</h2>
+          <h2 id={titleId}>PHOSPHOR CALIBRATION</h2>
         </div>
         <p>[TAB] NAVIGATE&nbsp;&nbsp; [ENTER] APPLY</p>
       </header>
@@ -70,17 +73,32 @@ export function SettingsOutput() {
           </div>
 
           <div className="settings-custom-color">
-            <label htmlFor="custom-phosphor-color">
+            <label htmlFor={colorInputId}>
               <span>CUSTOM SIGNAL</span>
               <input
-                id="custom-phosphor-color"
+                id={colorInputId}
                 type="color"
                 value={phosphor.hex}
-                onChange={(event) => setCustomColor(event.target.value)}
+                onChange={(event) => {
+                  const color = event.target.value;
+
+                  if (getContrastRatio(color, "#010603") < 4.5) {
+                    setColorMessage(
+                      `${color.toUpperCase()} was rejected because it is too dark for readable terminal text.`,
+                    );
+                    return;
+                  }
+
+                  setCustomColor(color);
+                  setColorMessage(`${color.toUpperCase()} custom signal applied.`);
+                }}
               />
             </label>
-            <output htmlFor="custom-phosphor-color">{phosphor.hex.toUpperCase()}</output>
+            <output htmlFor={colorInputId}>{phosphor.hex.toUpperCase()}</output>
           </div>
+          <p className="settings-color-status" role="status" aria-live="polite">
+            {colorMessage || "Custom colors require a minimum readable contrast ratio."}
+          </p>
         </div>
 
         <aside className="settings-preview" aria-label="Phosphor preview">
@@ -111,4 +129,30 @@ export function SettingsOutput() {
       </div>
     </section>
   );
+}
+
+function getContrastRatio(foreground: string, background: string) {
+  const foregroundLuminance = getRelativeLuminance(foreground);
+  const backgroundLuminance = getRelativeLuminance(background);
+  const lighter = Math.max(foregroundLuminance, backgroundLuminance);
+  const darker = Math.min(foregroundLuminance, backgroundLuminance);
+
+  return (lighter + 0.05) / (darker + 0.05);
+}
+
+function getRelativeLuminance(hex: string) {
+  const channels = hex
+    .replace("#", "")
+    .match(/.{2}/g)
+    ?.map((channel) => Number.parseInt(channel, 16) / 255);
+
+  if (!channels || channels.length !== 3) {
+    return 0;
+  }
+
+  const [red, green, blue] = channels.map((channel) =>
+    channel <= 0.03928 ? channel / 12.92 : Math.pow((channel + 0.055) / 1.055, 2.4),
+  );
+
+  return red * 0.2126 + green * 0.7152 + blue * 0.0722;
 }
