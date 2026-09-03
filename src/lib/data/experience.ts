@@ -3,11 +3,11 @@ import type { Experience } from "@/types";
 export const experiences: Experience[] = [
     {
         id: "1",
-        role: "Systems Engineer",
-        company: "University of Guanajuato / self taught",
+        role: "Systems Engineering",
+        company: "University of Guanajuato / Self-directed study",
         period: "2023 — 2027",
         description:
-            "Core curriculum covering algorithms, data structures, networking, and software engineering principles. Supplemented with hands-on projects and online courses.",
+            "Building a foundation in algorithms, data structures, networking, and software engineering, supplemented by hands-on projects and independent learning.",
         type: "education",
     }
 ];

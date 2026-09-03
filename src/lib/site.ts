@@ -1,7 +1,9 @@
-export const SITE_NAME = "Cloneeu Terminal Portfolio";
-export const SITE_TITLE = "Cloneeu — Software Engineer";
+export const SITE_NAME = "Alexandro — Software Engineer";
+export const SITE_TITLE = "Alexandro — Software Engineer";
 export const SITE_DESCRIPTION =
-  "Interactive CRT terminal portfolio of Alexandro (Cloneeu), a software engineer building web experiences, tools, and creative experiments.";
+  "Portfolio of Alexandro (Cloneeu), a systems engineering student and software engineer building clean, thoughtful applications.";
+
+export const SITE_BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 
 export function getSiteUrl() {
   const configuredUrl =
@@ -10,8 +12,19 @@ export function getSiteUrl() {
     process.env.VERCEL_URL;
 
   if (!configuredUrl) {
-    return new URL("http://localhost:3000");
+    return new URL("https://cloneeu.github.io/cloneeu-portfolio/");
   }
 
-  return new URL(configuredUrl.startsWith("http") ? configuredUrl : `https://${configuredUrl}`);
+  const url = new URL(configuredUrl.startsWith("http") ? configuredUrl : `https://${configuredUrl}`);
+  url.pathname = `${url.pathname.replace(/\/$/, "")}/`;
+  return url;
+}
+
+export function getAbsoluteUrl(path = "") {
+  return new URL(path.replace(/^\//, ""), getSiteUrl());
+}
+
+export function withBasePath(path: string) {
+  const normalizedPath = path.startsWith("/") ? path : `/${path}`;
+  return `${SITE_BASE_PATH}${normalizedPath}`;
 }

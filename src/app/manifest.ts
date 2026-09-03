@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { SITE_DESCRIPTION, SITE_NAME } from "@/lib/site";
+import { SITE_BASE_PATH, SITE_DESCRIPTION, SITE_NAME, withBasePath } from "@/lib/site";
 
 export const dynamic = "force-static";
 
@@ -8,22 +8,22 @@ export default function manifest(): MetadataRoute.Manifest {
     name: SITE_NAME,
     short_name: "Cloneeu",
     description: SITE_DESCRIPTION,
-    start_url: "/",
-    scope: "/",
+    start_url: `${SITE_BASE_PATH}/`,
+    scope: `${SITE_BASE_PATH}/`,
     display: "standalone",
-    background_color: "#010302",
-    theme_color: "#010302",
+    background_color: "#ffffff",
+    theme_color: "#ffffff",
     orientation: "any",
     categories: ["portfolio", "technology", "developer"],
     icons: [
       {
-        src: "/icon.svg",
+        src: withBasePath("/icon.svg"),
         sizes: "any",
         type: "image/svg+xml",
         purpose: "any",
       },
       {
-        src: "/icon.svg",
+        src: withBasePath("/icon.svg"),
         sizes: "any",
         type: "image/svg+xml",
         purpose: "maskable",

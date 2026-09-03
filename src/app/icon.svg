@@ -1,8 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-  <rect width="512" height="512" rx="96" fill="#010302"/>
-  <rect x="66" y="76" width="380" height="326" rx="54" fill="#061008" stroke="#7cff7a" stroke-width="16"/>
-  <path d="M112 154h288M112 324h288" stroke="#7cff7a" stroke-opacity=".18" stroke-width="8"/>
-  <circle cx="256" cy="238" r="54" fill="#000" stroke="#7cff7a" stroke-width="10"/>
-  <path d="M145 242c44-64 178-82 226-6-47 58-174 79-226 6Z" fill="none" stroke="#7cff7a" stroke-width="12" stroke-dasharray="4 15" stroke-linecap="round"/>
-  <path d="M190 438h132" stroke="#7cff7a" stroke-width="18" stroke-linecap="round"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" shape-rendering="crispEdges">
+  <rect width="512" height="512" fill="#ffffff"/>
+  <rect x="34" y="34" width="444" height="444" fill="none" stroke="#000000" stroke-width="18"/>
+  <rect x="92" y="104" width="62" height="62" fill="#3cd9b3"/>
+  <rect x="154" y="166" width="62" height="62" fill="#ffedbe"/>
+  <rect x="216" y="228" width="62" height="62" fill="#ffbcc3"/>
+  <path d="M110 340h54v54h-54zM174 340h54v54h-54zM238 340h54v54h-54zM302 340h100v54H302z" fill="#000000"/>
+  <path d="M318 110h84v32h-84zM318 158h62v32h-62zM318 206h84v32h-84z" fill="#000000"/>
 </svg>
